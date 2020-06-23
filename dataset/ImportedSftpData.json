@@ -1,0 +1,27 @@
+{
+	"name": "ImportedSftpData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OcctooSftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"fileName": "20200420010105_setStockIncr_see.xml",
+				"folderPath": "/Test/Occtoo/Test/SEE/Stock"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
