@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "SftpLocation",
-				"folderPath": "/Test/Occtoo/Test"
+				"folderPath": "/Test/Occtoo/Test/SEE"
 			}
 		}
 	}
