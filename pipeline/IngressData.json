@@ -83,7 +83,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ImportedFiles",
+						"referenceName": "OutputFiles",
 						"type": "DatasetReference"
 					}
 				]
