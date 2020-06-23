@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "SftpLocation",
-				"fileName": "20200420010105_setStockIncr_see.xml",
-				"folderPath": "/Test/Occtoo/Test/SEE/Stock"
+				"folderPath": "/Test/Occtoo/Test"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
