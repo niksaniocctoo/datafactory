@@ -30,6 +30,8 @@
 							"type": "SftpReadSettings",
 							"recursive": true,
 							"maxConcurrentConnections": 1,
+							"wildcardFolderPath": "Test/Occtoo/Test/SEE",
+							"wildcardFileName": "*.xml",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
