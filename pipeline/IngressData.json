@@ -15,9 +15,41 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "SftpReadSettings",
+							"recursive": true,
+							"maxConcurrentConnections": 1,
+							"wildcardFolderPath": "*",
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						}
+					},
 					"enableStaging": false,
-					"dataIntegrationUnits": 2
-				}
+					"parallelCopies": 1
+				},
+				"inputs": [
+					{
+						"referenceName": "SftpImportService",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobStorageXmlFiles",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
