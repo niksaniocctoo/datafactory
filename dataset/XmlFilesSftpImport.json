@@ -1,0 +1,17 @@
+{
+	"name": "XmlFilesSftpImport",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OcctooSftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"folderPath": "/Test/Occtoo/Test"
+			}
+		}
+	}
+}
