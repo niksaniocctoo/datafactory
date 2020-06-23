@@ -13,7 +13,7 @@
 				"fileName": "*",
 				"folderPath": "/Test/Occtoo/Test"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
