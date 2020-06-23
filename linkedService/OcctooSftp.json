@@ -2,7 +2,7 @@
 	"name": "OcctooSftp",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"description": "Sftp connection to client sftp server",
+		"description": "sftp connection to client sftp server",
 		"annotations": [],
 		"type": "Sftp",
 		"typeProperties": {
