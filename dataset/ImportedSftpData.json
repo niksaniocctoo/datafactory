@@ -10,18 +10,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "SftpLocation",
-				"fileName": "20200420010105_setStockIncr_see.xml",
-				"folderPath": "/Test/Occtoo/Test/SEE/Stock"
+				"fileName": "*",
+				"folderPath": "/Test/Occtoo/Test"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"type": "String"
-			}
-		]
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
