@@ -13,7 +13,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "/Test/Occtoo/Test/SEE/"
+					},
+					{
+						"name": "Destination",
+						"value": "sink//"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "BinarySource",
@@ -33,6 +42,7 @@
 						"type": "BinarySink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
+							"maxConcurrentConnections": 1,
 							"copyBehavior": "FlattenHierarchy"
 						}
 					},
