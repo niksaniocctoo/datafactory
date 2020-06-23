@@ -22,6 +22,7 @@
 							"recursive": true,
 							"maxConcurrentConnections": 1,
 							"wildcardFolderPath": "*",
+							"wildcardFileName": "*",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
