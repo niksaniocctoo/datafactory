@@ -41,8 +41,7 @@
 					"sink": {
 						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"maxConcurrentConnections": 1,
+							"type": "AzureBlobFSWriteSettings",
 							"copyBehavior": "FlattenHierarchy"
 						}
 					},
@@ -57,7 +56,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "BlobStorageXmlFiles",
+						"referenceName": "DataLakeFS",
 						"type": "DatasetReference"
 					}
 				]
