@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OcctooSftp'"
 		},
+		"AzureDataLakeStorageLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
+		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "ftp.fenixoutdoor.se"
@@ -22,6 +26,10 @@
 		"OcctooSftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "inRiver"
+		},
+		"AzureDataLakeStorageLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -58,6 +66,23 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('OcctooSftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorageLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
 					}
 				}
 			},
@@ -108,6 +133,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DataLakeFS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorageLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Files",
+						"fileSystem": "DataLake"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IngressData')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -152,8 +200,7 @@
 							"sink": {
 								"type": "BinarySink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings",
-									"maxConcurrentConnections": 1,
+									"type": "AzureBlobFSWriteSettings",
 									"copyBehavior": "FlattenHierarchy"
 								}
 							},
@@ -169,7 +216,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "BlobStorageXmlFiles",
+								"referenceName": "DataLakeFS",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -180,7 +227,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SftpImportService')]",
-				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFiles')]"
+				"[concat(variables('factoryId'), '/datasets/DataLakeFS')]"
 			]
 		}
 	]

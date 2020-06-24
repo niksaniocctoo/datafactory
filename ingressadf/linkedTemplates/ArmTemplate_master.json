@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OcctooSftp'"
 		},
+		"AzureDataLakeStorageLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
+		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "ftp.fenixoutdoor.se"
@@ -22,6 +26,10 @@
 		"OcctooSftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "inRiver"
+		},
+		"AzureDataLakeStorageLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -56,11 +64,17 @@
 					"OcctooSftp_password": {
 						"value": "[parameters('OcctooSftp_password')]"
 					},
+					"AzureDataLakeStorageLS_accountKey": {
+						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
+					},
 					"OcctooSftp_properties_typeProperties_host": {
 						"value": "[parameters('OcctooSftp_properties_typeProperties_host')]"
 					},
 					"OcctooSftp_properties_typeProperties_userName": {
 						"value": "[parameters('OcctooSftp_properties_typeProperties_userName')]"
+					},
+					"AzureDataLakeStorageLS_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]"
 					}
 				}
 			},
