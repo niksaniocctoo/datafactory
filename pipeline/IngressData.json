@@ -155,26 +155,6 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "SetVariableAct",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "GetFileMetadata",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "name",
-								"value": {
-									"value": "@item().name",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "GetFileMetadata",
 							"type": "GetMetadata",
 							"dependsOn": [],
@@ -208,14 +188,31 @@
 									"type": "BinaryReadSettings"
 								}
 							}
+						},
+						{
+							"name": "AppendVariableAct",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "GetFileMetadata",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "names",
+								"value": "@item().name"
+							}
 						}
 					]
 				}
 			}
 		],
 		"variables": {
-			"name": {
-				"type": "String"
+			"names": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
