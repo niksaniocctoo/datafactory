@@ -61,38 +61,6 @@
 				]
 			},
 			{
-				"name": "AzureFunctLS",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "ForEachAct",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "ImportDataAF",
-					"method": "POST",
-					"body": {
-						"value": "@activity('GetFolderMetadataAct').output.name",
-						"type": "Expression"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AZImportFiles",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "GetFolderMetadataAct",
 				"type": "GetMetadata",
 				"dependsOn": [
@@ -204,6 +172,35 @@
 							"typeProperties": {
 								"variableName": "names",
 								"value": "@item()"
+							}
+						},
+						{
+							"name": "ImportFileAF",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [
+								{
+									"activity": "GetFileMetadata",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"functionName": "ImportDataAF",
+								"method": "POST",
+								"body": "@item()"
+							},
+							"linkedServiceName": {
+								"referenceName": "AZImportFiles",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
