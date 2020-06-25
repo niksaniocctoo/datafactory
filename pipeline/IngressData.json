@@ -55,11 +55,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "BlobStorageXmlFiles",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": "@item().name"
-						}
+						"referenceName": "BlobStorageXmlFolder",
+						"type": "DatasetReference"
 					}
 				]
 			},
