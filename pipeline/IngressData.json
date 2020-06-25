@@ -170,6 +170,11 @@
 				]
 			}
 		},
+		"variables": {
+			"name": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
