@@ -196,7 +196,7 @@
 							"typeProperties": {
 								"functionName": "ImportDataAF",
 								"method": "POST",
-								"body": "@item()"
+								"body": "@item().name"
 							},
 							"linkedServiceName": {
 								"referenceName": "AZImportFiles",
