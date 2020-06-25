@@ -80,8 +80,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": "ImportFilesAF",
-					"method": "GET"
+					"functionName": "ImportDataAF"
 				},
 				"linkedServiceName": {
 					"referenceName": "AZImportFiles",
