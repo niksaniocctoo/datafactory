@@ -179,7 +179,13 @@
 							"typeProperties": {
 								"functionName": "ImportDataAF",
 								"method": "POST",
-								"body": "@item().name"
+								"headers": {
+									"x-environment": "000000000000000000000000CF52C421"
+								},
+								"body": {
+									"fileName": "@item().name",
+									"name": "@item().name"
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "AZImportFiles",
