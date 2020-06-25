@@ -82,7 +82,10 @@
 				"typeProperties": {
 					"functionName": "ImportDataAF",
 					"method": "POST",
-					"body": "inputFileName"
+					"body": {
+						"value": "@variables('name')",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AZImportFiles",
