@@ -189,7 +189,13 @@
 							"typeProperties": {
 								"dataset": {
 									"referenceName": "BlobStorageXmlFiles",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
 								},
 								"fieldList": [
 									"itemName",
