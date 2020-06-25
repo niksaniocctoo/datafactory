@@ -69,6 +69,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -80,11 +86,21 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": "ImportDataAF"
+					"functionName": "ImportDataAF",
+					"method": "GET"
 				},
 				"linkedServiceName": {
 					"referenceName": "AZImportFiles",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 10
 				}
 			}
 		],
