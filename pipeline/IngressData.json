@@ -30,7 +30,7 @@
 							"type": "SftpReadSettings",
 							"recursive": true,
 							"maxConcurrentConnections": 1,
-							"wildcardFolderPath": "Test/Occtoo/Test/SEE",
+							"wildcardFolderPath": "*",
 							"wildcardFileName": "*.xml",
 							"deleteFilesAfterCompletion": false
 						},
@@ -60,6 +60,34 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "AzureFunctLS",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "ImportDataAct",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ImportFilesAF",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "AZImportFiles",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
