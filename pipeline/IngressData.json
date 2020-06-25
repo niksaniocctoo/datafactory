@@ -113,14 +113,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "BlobStorageXmlFiles",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": {
-								"value": "@activity('ImportDataAct').output.name",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "BlobStorageXmlFolder",
+						"type": "DatasetReference"
 					},
 					"fieldList": [
 						"itemName",
