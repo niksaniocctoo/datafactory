@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "/Test/Occtoo/Test/SEE/"
+						"value": "/*/*.xml"
 					},
 					{
 						"name": "Destination",
@@ -29,7 +29,6 @@
 						"storeSettings": {
 							"type": "SftpReadSettings",
 							"recursive": true,
-							"maxConcurrentConnections": 1,
 							"wildcardFolderPath": "*",
 							"wildcardFileName": "*.xml",
 							"deleteFilesAfterCompletion": false
@@ -41,7 +40,7 @@
 					"sink": {
 						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
+							"type": "AzureBlobStorageWriteSettings",
 							"copyBehavior": "FlattenHierarchy"
 						}
 					},
@@ -56,7 +55,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DataLakeFS",
+						"referenceName": "BlobStorageXmlFiles",
 						"type": "DatasetReference"
 					}
 				]
