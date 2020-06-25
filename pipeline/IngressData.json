@@ -155,7 +155,11 @@
 							"name": "SetVariableAct",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "name",
+								"value": "@item()"
+							}
 						}
 					]
 				}
