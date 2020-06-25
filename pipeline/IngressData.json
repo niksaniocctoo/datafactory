@@ -83,7 +83,7 @@
 					"functionName": "ImportDataAF",
 					"method": "POST",
 					"body": {
-						"value": "@activity('GetFileMetadata').output.name",
+						"value": "@activity('GetFolderMetadataAct').output.name",
 						"type": "Expression"
 					}
 				},
