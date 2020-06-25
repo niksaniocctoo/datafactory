@@ -83,7 +83,7 @@
 					"functionName": "ImportDataAF",
 					"method": "POST",
 					"body": {
-						"value": "@activity('GetFileMetadata').output.FileName",
+						"value": "@activity('GetFileMetadata').output.name",
 						"type": "Expression"
 					}
 				},
@@ -93,7 +93,7 @@
 				}
 			},
 			{
-				"name": "GetMetadataAct",
+				"name": "GetFolderMetadataAct",
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
@@ -135,7 +135,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GetMetadataAct",
+						"activity": "GetFolderMetadataAct",
 						"dependencyConditions": [
 							"Succeeded"
 						]
