@@ -158,23 +158,6 @@
 							}
 						},
 						{
-							"name": "AppendVariableAct",
-							"type": "AppendVariable",
-							"dependsOn": [
-								{
-									"activity": "GetFileMetadata",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "names",
-								"value": "@item()"
-							}
-						},
-						{
 							"name": "ImportFileAF",
 							"type": "AzureFunctionActivity",
 							"dependsOn": [
