@@ -203,7 +203,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "names",
-								"value": "@item().name"
+								"value": "@item()"
 							}
 						}
 					]
