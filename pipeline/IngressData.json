@@ -65,13 +65,7 @@
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "ImportDataAct",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Wait1",
+						"activity": "ForEachAct",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -87,7 +81,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "ImportDataAF",
-					"method": "GET"
+					"method": "POST",
+					"body": "inputFileName"
 				},
 				"linkedServiceName": {
 					"referenceName": "AZImportFiles",
@@ -95,12 +90,62 @@
 				}
 			},
 			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [],
+				"name": "GetMetadataAct",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "ImportDataAct",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"waitTimeInSeconds": 10
+					"dataset": {
+						"referenceName": "BlobStorageXmlFiles",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"itemName",
+						"itemType",
+						"lastModified",
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings"
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEachAct",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetMetadataAct",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [
+					{
+						"name": "name",
+						"value": "item().name"
+					}
+				],
+				"typeProperties": {
+					"isSequential": true
 				}
 			}
 		],
