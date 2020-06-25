@@ -144,7 +144,7 @@
 				"userProperties": [
 					{
 						"name": "name",
-						"value": "item().name"
+						"value": "@item().name"
 					}
 				],
 				"typeProperties": {
@@ -171,15 +171,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"names": {
-				"type": "array",
-				"defaultValue": [
-					"aleksandar",
-					"niksic"
-				]
-			}
-		},
 		"variables": {
 			"name": {
 				"type": "String"
