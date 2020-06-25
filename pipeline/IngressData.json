@@ -145,10 +145,31 @@
 					}
 				],
 				"typeProperties": {
-					"isSequential": true
+					"items": {
+						"value": "@activity('GetMetadataAct').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "SetVariableAct",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": []
+						}
+					]
 				}
 			}
 		],
+		"parameters": {
+			"names": {
+				"type": "array",
+				"defaultValue": [
+					"aleksandar",
+					"niksic"
+				]
+			}
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
