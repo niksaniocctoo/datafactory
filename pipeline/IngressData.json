@@ -56,7 +56,10 @@
 				"outputs": [
 					{
 						"referenceName": "BlobStorageXmlFiles",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "@item().name"
+						}
 					}
 				]
 			},
@@ -114,7 +117,13 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "BlobStorageXmlFiles",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@activity('ImportDataAct').output.name",
+								"type": "Expression"
+							}
+						}
 					},
 					"fieldList": [
 						"itemName",
@@ -149,7 +158,7 @@
 				],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetMetadataAct').output.childItems",
+						"value": "@activity('GetFolderMetadataAct').output.childItems",
 						"type": "Expression"
 					},
 					"isSequential": true,
