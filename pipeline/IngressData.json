@@ -81,16 +81,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "SftpImportService",
+						"referenceName": "BlobStorageXmlFolder",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
 						"itemName",
 						"itemType",
-						"lastModified"
+						"lastModified",
+						"childItems"
 					],
 					"storeSettings": {
-						"type": "SftpReadSettings"
+						"type": "AzureBlobStorageReadSettings"
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
