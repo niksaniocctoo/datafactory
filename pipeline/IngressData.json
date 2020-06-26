@@ -29,8 +29,6 @@
 						"storeSettings": {
 							"type": "SftpReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "*",
-							"wildcardFileName": "*.xml",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
