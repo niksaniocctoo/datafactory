@@ -50,10 +50,7 @@
 				"inputs": [
 					{
 						"referenceName": "SftpImportService",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileName": "@item()"
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
