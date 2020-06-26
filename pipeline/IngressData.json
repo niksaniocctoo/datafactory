@@ -29,6 +29,8 @@
 						"storeSettings": {
 							"type": "SftpReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "*",
+							"wildcardFileName": "*.xml",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -39,7 +41,10 @@
 						"type": "BinarySink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "FlattenHierarchy"
+							"copyBehavior": {
+								"value": "@(concat(guid(), item().name))",
+								"type": "Expression"
+							}
 						}
 					},
 					"enableStaging": false,
@@ -48,7 +53,13 @@
 				"inputs": [
 					{
 						"referenceName": "SftpImportService",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": {
+								"value": "item().name",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
