@@ -5,6 +5,12 @@
 			"referenceName": "OcctooSftp",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"fileName": {
+				"type": "string",
+				"defaultValue": "@item().name"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
