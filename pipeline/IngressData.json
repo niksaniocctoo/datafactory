@@ -41,10 +41,7 @@
 						"type": "BinarySink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": {
-								"value": "@(concat(guid(), item().name))",
-								"type": "Expression"
-							}
+							"copyBehavior": "FlattenHierarchy"
 						}
 					},
 					"enableStaging": false,
@@ -53,13 +50,7 @@
 				"inputs": [
 					{
 						"referenceName": "SftpImportService",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileName": {
-								"value": "item().name",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
@@ -90,17 +81,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "BlobStorageXmlFolder",
+						"referenceName": "SftpImportService",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
 						"itemName",
 						"itemType",
-						"lastModified",
-						"childItems"
+						"lastModified"
 					],
 					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings"
+						"type": "SftpReadSettings"
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
