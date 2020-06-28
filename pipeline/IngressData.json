@@ -182,7 +182,7 @@
 								}
 							},
 							"linkedServiceName": {
-								"referenceName": "AZImportFiles",
+								"referenceName": "ImportDataAF",
 								"type": "LinkedServiceReference"
 							}
 						},
