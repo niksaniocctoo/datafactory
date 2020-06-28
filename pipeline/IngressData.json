@@ -172,7 +172,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"functionName": "ImportDataAF",
+								"functionName": "Import",
 								"method": "POST",
 								"headers": {
 									"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57"
