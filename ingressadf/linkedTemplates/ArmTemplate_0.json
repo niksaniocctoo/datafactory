@@ -19,17 +19,33 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
 		},
+		"AZImportFiles_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
+		},
+		"ImportDataAF_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ImportDataAF'"
+		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "ftp.fenixoutdoor.se"
 		},
 		"OcctooSftp_properties_typeProperties_userName": {
 			"type": "string",
-			"defaultValue": "inRiver"
+			"defaultValue": "OcctooTest"
 		},
 		"AzureDataLakeStorageLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
+		},
+		"AZImportFiles_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
+		},
+		"ImportDataAF_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -54,7 +70,7 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "sftp connection to client sftp server",
+				"description": "Sftp connection to client sftp server",
 				"annotations": [],
 				"type": "Sftp",
 				"typeProperties": {
@@ -89,6 +105,41 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AZImportFiles')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Function importing data",
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AZImportFiles_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ImportDataAF')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ImportDataAF_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ImportDataAF_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BlobStorageXmlFiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -97,11 +148,20 @@
 					"referenceName": "AzureBlobStorageLS",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Binary",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
 						"container": "sink"
 					}
 				}
@@ -124,7 +184,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "SftpLocation",
-						"folderPath": "/Test/Occtoo/Test"
+						"fileName": "*.xml",
+						"folderPath": "/*"
 					}
 				}
 			},
@@ -156,6 +217,28 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BlobStorageXmlFolder')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "sink"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IngressData')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -175,7 +258,7 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "/Test/Occtoo/Test/SEE/"
+								"value": "/*/*.xml"
 							},
 							{
 								"name": "Destination",
@@ -188,8 +271,7 @@
 								"storeSettings": {
 									"type": "SftpReadSettings",
 									"recursive": true,
-									"maxConcurrentConnections": 1,
-									"wildcardFolderPath": "Test/Occtoo/Test/SEE",
+									"wildcardFolderPath": "*",
 									"wildcardFileName": "*.xml",
 									"deleteFilesAfterCompletion": false
 								},
@@ -200,7 +282,7 @@
 							"sink": {
 								"type": "BinarySink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
+									"type": "AzureBlobStorageWriteSettings",
 									"copyBehavior": "FlattenHierarchy"
 								}
 							},
@@ -216,18 +298,183 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "DataLakeFS",
+								"referenceName": "BlobStorageXmlFolder",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "GetFolderMetadataAct",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "ImportDataAct",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BlobStorageXmlFolder",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"itemName",
+								"itemType",
+								"lastModified",
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings"
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEachAct",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetFolderMetadataAct",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetFolderMetadataAct').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "GetFileMetadata",
+									"type": "GetMetadata",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "BlobStorageXmlFiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"FileName": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										},
+										"fieldList": [
+											"itemName",
+											"lastModified"
+										],
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings"
+										},
+										"formatSettings": {
+											"type": "BinaryReadSettings"
+										}
+									}
+								},
+								{
+									"name": "ImportFileAF",
+									"type": "AzureFunctionActivity",
+									"dependsOn": [
+										{
+											"activity": "GetFileMetadata",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"functionName": "ImportDataAF",
+										"method": "POST",
+										"headers": {
+											"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57"
+										},
+										"body": {
+											"fileName": "@item().name"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ImportDataAF",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "WaitingWebAct",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "ImportFileAF",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@activity('ImportFileAF').output.statusQueryGetUri",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {}
+									}
+								}
+							]
+						}
 					}
 				],
+				"variables": {
+					"names": {
+						"type": "Array"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SftpImportService')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeFS')]"
+				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFolder')]",
+				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFiles')]",
+				"[concat(variables('factoryId'), '/linkedServices/ImportDataAF')]"
 			]
 		}
 	]

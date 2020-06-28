@@ -14,14 +14,26 @@
 		"AzureDataLakeStorageLS_accountKey": {
 			"value": ""
 		},
+		"AZImportFiles_functionKey": {
+			"value": ""
+		},
+		"ImportDataAF_functionKey": {
+			"value": ""
+		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"value": "ftp.fenixoutdoor.se"
 		},
 		"OcctooSftp_properties_typeProperties_userName": {
-			"value": "inRiver"
+			"value": "OcctooTest"
 		},
 		"AzureDataLakeStorageLS_properties_typeProperties_url": {
 			"value": "https://blobstoragels.dfs.core.windows.net"
+		},
+		"AZImportFiles_properties_typeProperties_functionAppUrl": {
+			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
+		},
+		"ImportDataAF_properties_typeProperties_functionAppUrl": {
+			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
 		}
 	}
 }

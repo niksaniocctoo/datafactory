@@ -19,17 +19,33 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
 		},
+		"AZImportFiles_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
+		},
+		"ImportDataAF_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ImportDataAF'"
+		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "ftp.fenixoutdoor.se"
 		},
 		"OcctooSftp_properties_typeProperties_userName": {
 			"type": "string",
-			"defaultValue": "inRiver"
+			"defaultValue": "OcctooTest"
 		},
 		"AzureDataLakeStorageLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
+		},
+		"AZImportFiles_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
+		},
+		"ImportDataAF_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -67,6 +83,12 @@
 					"AzureDataLakeStorageLS_accountKey": {
 						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
 					},
+					"AZImportFiles_functionKey": {
+						"value": "[parameters('AZImportFiles_functionKey')]"
+					},
+					"ImportDataAF_functionKey": {
+						"value": "[parameters('ImportDataAF_functionKey')]"
+					},
 					"OcctooSftp_properties_typeProperties_host": {
 						"value": "[parameters('OcctooSftp_properties_typeProperties_host')]"
 					},
@@ -75,6 +97,12 @@
 					},
 					"AzureDataLakeStorageLS_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]"
+					},
+					"AZImportFiles_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]"
+					},
+					"ImportDataAF_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ImportDataAF_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},

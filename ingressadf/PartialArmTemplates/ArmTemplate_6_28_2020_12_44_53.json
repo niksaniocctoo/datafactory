@@ -6,46 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ingressadf"
-		},
-		"AzureBlobStorageLS_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageLS'"
-		},
-		"OcctooSftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'OcctooSftp'"
-		},
-		"AzureDataLakeStorageLS_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
-		},
-		"AZImportFiles_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
-		},
-		"ImportDataAF_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ImportDataAF'"
-		},
-		"OcctooSftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "ftp.fenixoutdoor.se"
-		},
-		"OcctooSftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "OcctooTest"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"ImportDataAF_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -106,15 +66,13 @@
 						"inputs": [
 							{
 								"referenceName": "SftpImportService",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "BlobStorageXmlFolder",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -140,8 +98,7 @@
 						"typeProperties": {
 							"dataset": {
 								"referenceName": "BlobStorageXmlFolder",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"fieldList": [
 								"itemName",
@@ -269,8 +226,7 @@
 											"value": "@activity('ImportFileAF').output.statusQueryGetUri",
 											"type": "Expression"
 										},
-										"method": "GET",
-										"headers": {}
+										"method": "GET"
 									}
 								}
 							]
@@ -318,9 +274,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SftpImportService')]",
@@ -346,19 +300,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorageLS_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/OcctooSftp')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -367,58 +308,18 @@
 				"annotations": [],
 				"type": "Sftp",
 				"typeProperties": {
-					"host": "[parameters('OcctooSftp_properties_typeProperties_host')]",
+					"host": "ftp.fenixoutdoor.se",
 					"port": 22,
 					"skipHostKeyValidation": true,
 					"authenticationType": "Basic",
-					"userName": "[parameters('OcctooSftp_properties_typeProperties_userName')]",
+					"userName": "OcctooTest",
 					"password": {
 						"type": "SecureString",
-						"value": "[parameters('OcctooSftp_password')]"
+						"value": "**********"
 					}
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorageLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeFS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorageLS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "Files",
-						"fileSystem": "DataLake"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageLS')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AZImportFiles')]",
@@ -429,10 +330,10 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]",
+					"functionAppUrl": "https://importcustomerdatatoonboarding.azurewebsites.net",
 					"functionKey": {
 						"type": "SecureString",
-						"value": "[parameters('AZImportFiles_functionKey')]"
+						"value": "**********"
 					}
 				}
 			},
@@ -456,9 +357,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ImportDataAF')]",
@@ -468,10 +367,10 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "[parameters('ImportDataAF_properties_typeProperties_functionAppUrl')]",
+					"functionAppUrl": "https://importcustomerdatatoonboarding.azurewebsites.net",
 					"functionKey": {
 						"type": "SecureString",
-						"value": "[parameters('ImportDataAF_functionKey')]"
+						"value": "**********"
 					}
 				}
 			},
