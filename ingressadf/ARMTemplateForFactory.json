@@ -45,7 +45,7 @@
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
 			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
+			"defaultValue": "https://importdataaf.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -231,7 +231,7 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"functionName": "ImportDataAF",
+										"functionName": "Import",
 										"method": "POST",
 										"headers": {
 											"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57"

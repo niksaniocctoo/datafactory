@@ -33,7 +33,7 @@
 			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
-			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
+			"value": "https://importdataaf.azurewebsites.net"
 		},
 		"containerUri": {
 			"value": ""

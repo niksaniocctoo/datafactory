@@ -45,7 +45,7 @@
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
 			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
+			"defaultValue": "https://importdataaf.azurewebsites.net"
 		},
 		"containerUri": {
 			"type": "string",
