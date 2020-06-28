@@ -1,0 +1,12 @@
+{
+	"name": "ImportDataAF",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://importcustomerdatatoonboarding.azurewebsites.net",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIklOR1JFU1NBREZfNTAyOGU0YzAtNzE3Mi00OGM4LTk0NmEtMDA3OWZkYmJjYWFmIg0KfQ=="
+		}
+	}
+}
