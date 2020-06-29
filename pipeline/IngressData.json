@@ -118,51 +118,9 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "GetFileMetadata",
-							"type": "GetMetadata",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "GetFilesForProcessing",
-									"type": "DatasetReference",
-									"parameters": {
-										"FileName": {
-											"value": "@dataset().name",
-											"type": "Expression"
-										}
-									}
-								},
-								"fieldList": [
-									"itemName",
-									"lastModified"
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings"
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							}
-						},
-						{
 							"name": "ImportFileAF",
 							"type": "AzureFunctionActivity",
-							"dependsOn": [
-								{
-									"activity": "GetFileMetadata",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
