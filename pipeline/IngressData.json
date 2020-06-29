@@ -115,8 +115,7 @@
 						"value": "@activity('GetFolderMetadataAct').output.childItems",
 						"type": "Expression"
 					},
-					"isSequential": false,
-					"batchCount": 10,
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "GetFileMetadata",
