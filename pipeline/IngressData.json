@@ -134,7 +134,7 @@
 									"referenceName": "GetFilesForProcessing",
 									"type": "DatasetReference",
 									"parameters": {
-										"FileName": "@dataset().FileName"
+										"FileName": "@item().FileName"
 									}
 								},
 								"fieldList": [
