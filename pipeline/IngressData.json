@@ -257,7 +257,8 @@
 								"functionName": "Split",
 								"method": "POST",
 								"headers": {
-									"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57"
+									"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57",
+									"Content-Type": "application/json"
 								},
 								"body": {
 									"fileName": "@item().name"
