@@ -258,7 +258,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"functionName": "Split",
-								"method": "POST"
+								"method": "POST",
+								"body": {
+									"fileName": "@item().name"
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "ImportDataAF",
