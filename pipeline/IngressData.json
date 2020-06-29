@@ -259,6 +259,9 @@
 							"typeProperties": {
 								"functionName": "Split",
 								"method": "POST",
+								"headers": {
+									"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57"
+								},
 								"body": {
 									"fileName": "@item().name"
 								}
