@@ -81,7 +81,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "BlobStorageXmlFolder",
+						"referenceName": "GetFolderForProcessing",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -131,13 +131,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "BlobStorageXmlFiles",
+									"referenceName": "GetFilesForProcessing",
 									"type": "DatasetReference",
 									"parameters": {
-										"FileName": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
+										"fileName": "@item().name"
 									}
 								},
 								"fieldList": [
@@ -242,7 +239,7 @@
 						"value": "@activity('GetFilesForSpliting').output.childItems",
 						"type": "Expression"
 					},
-					"batchCount": 2,
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "SplitFile",
