@@ -65,7 +65,7 @@
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "ImportDataAct",
+						"activity": "SplitEachFile",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -180,6 +180,85 @@
 								"body": {
 									"fileName": "@item().name"
 								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ImportDataAF",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetFilesForSpliting",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "ImportDataAct",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "BlobStorageXmlFolder",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"itemName",
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings"
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "SplitEachFile",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetFilesForSpliting",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetFilesForSpliting').output.childItems",
+						"type": "Expression"
+					},
+					"batchCount": 2,
+					"activities": [
+						{
+							"name": "SplitFile",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"functionName": "Split",
+								"method": "POST"
 							},
 							"linkedServiceName": {
 								"referenceName": "ImportDataAF",
