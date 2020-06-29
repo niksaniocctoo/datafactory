@@ -194,29 +194,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeFS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorageLS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "Files",
-						"fileSystem": "DataLake"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageLS')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/BlobStorageXmlFolder')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -230,6 +207,58 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"container": "sink"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetFilesForProcessing')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "*.xml",
+						"folderPath": "split",
+						"container": "sink"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetFolderForProcessing')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "split",
 						"container": "sink"
 					}
 				}
@@ -309,7 +338,7 @@
 						"type": "GetMetadata",
 						"dependsOn": [
 							{
-								"activity": "ImportDataAct",
+								"activity": "SplitEachFile",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -325,7 +354,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "BlobStorageXmlFolder",
+								"referenceName": "GetFolderForProcessing",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -360,54 +389,13 @@
 								"value": "@activity('GetFolderMetadataAct').output.childItems",
 								"type": "Expression"
 							},
-							"isSequential": true,
+							"isSequential": false,
+							"batchCount": 5,
 							"activities": [
-								{
-									"name": "GetFileMetadata",
-									"type": "GetMetadata",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "BlobStorageXmlFiles",
-											"type": "DatasetReference",
-											"parameters": {
-												"FileName": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										},
-										"fieldList": [
-											"itemName",
-											"lastModified"
-										],
-										"storeSettings": {
-											"type": "AzureBlobStorageReadSettings"
-										},
-										"formatSettings": {
-											"type": "BinaryReadSettings"
-										}
-									}
-								},
 								{
 									"name": "ImportFileAF",
 									"type": "AzureFunctionActivity",
-									"dependsOn": [
-										{
-											"activity": "GetFileMetadata",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
+									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -433,6 +421,93 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "GetFilesForSpliting",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "ImportDataAct",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BlobStorageXmlFolder",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"itemName",
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings"
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "SplitEachFile",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetFilesForSpliting",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetFilesForSpliting').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "SplitFile",
+									"type": "AzureFunctionActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"functionName": "Split",
+										"method": "POST",
+										"headers": {
+											"x-environment": "93cbc3de-cc31-443c-b8c4-2e659f40ad57",
+											"Content-Type": "application/json"
+										},
+										"body": {
+											"fileName": "@item().name"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ImportDataAF",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
 					}
 				],
 				"variables": {
@@ -445,7 +520,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SftpImportService')]",
 				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFolder')]",
-				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFiles')]",
+				"[concat(variables('factoryId'), '/datasets/GetFolderForProcessing')]",
 				"[concat(variables('factoryId'), '/linkedServices/ImportDataAF')]"
 			]
 		}

@@ -6,46 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ingressadf"
-		},
-		"AzureBlobStorageLS_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageLS'"
-		},
-		"OcctooSftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'OcctooSftp'"
-		},
-		"AzureDataLakeStorageLS_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
-		},
-		"AZImportFiles_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
-		},
-		"ImportDataAF_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ImportDataAF'"
-		},
-		"OcctooSftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "ftp.fenixoutdoor.se"
-		},
-		"OcctooSftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "OcctooTest"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"ImportDataAF_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importdataaf.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -106,15 +66,13 @@
 						"inputs": [
 							{
 								"referenceName": "SftpImportService",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "BlobStorageXmlFolder",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -140,8 +98,7 @@
 						"typeProperties": {
 							"dataset": {
 								"referenceName": "GetFolderForProcessing",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"fieldList": [
 								"itemName",
@@ -229,8 +186,7 @@
 						"typeProperties": {
 							"dataset": {
 								"referenceName": "BlobStorageXmlFolder",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"fieldList": [
 								"itemName",
@@ -303,174 +259,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SftpImportService')]",
-				"[concat(variables('factoryId'), '/datasets/BlobStorageXmlFolder')]",
-				"[concat(variables('factoryId'), '/datasets/GetFolderForProcessing')]",
-				"[concat(variables('factoryId'), '/linkedServices/ImportDataAF')]"
+				"[concat(variables('factoryId'), '/datasets/GetFolderForProcessing')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BlobStorageXmlFiles')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorageLS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"FileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().FileName",
-							"type": "Expression"
-						},
-						"container": "sink"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SftpImportService')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "OcctooSftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "SftpLocation",
-						"fileName": "*.xml",
-						"folderPath": "/*"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/OcctooSftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorageLS_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OcctooSftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Sftp connection to client sftp server",
-				"annotations": [],
-				"type": "Sftp",
-				"typeProperties": {
-					"host": "[parameters('OcctooSftp_properties_typeProperties_host')]",
-					"port": 22,
-					"skipHostKeyValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('OcctooSftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('OcctooSftp_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorageLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AZImportFiles')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Function importing data",
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AZImportFiles_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BlobStorageXmlFolder')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorageLS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "sink"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportDataAF')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ImportDataAF_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ImportDataAF_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetFilesForProcessing')]",
@@ -497,9 +287,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GetFolderForProcessing')]",
@@ -520,9 +308,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
