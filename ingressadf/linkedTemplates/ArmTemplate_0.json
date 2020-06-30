@@ -427,8 +427,7 @@
 								"value": "@activity('GetFilesForSpliting').output.childItems",
 								"type": "Expression"
 							},
-							"isSequential": false,
-							"batchCount": 5,
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "SplitFile",
