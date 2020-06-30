@@ -5,35 +5,35 @@
 		"factoryName": {
 			"value": "ingressadf"
 		},
-		"AzureBlobStorageLS_connectionString": {
+		"AZImportFiles_functionKey": {
 			"value": ""
 		},
-		"OcctooSftp_password": {
+		"AzureBlobStorageLS_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStorageLS_accountKey": {
 			"value": ""
 		},
-		"AZImportFiles_functionKey": {
-			"value": ""
-		},
 		"ImportDataAF_functionKey": {
 			"value": ""
+		},
+		"OcctooSftp_password": {
+			"value": ""
+		},
+		"AZImportFiles_properties_typeProperties_functionAppUrl": {
+			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
+		},
+		"AzureDataLakeStorageLS_properties_typeProperties_url": {
+			"value": "https://blobstoragels.dfs.core.windows.net"
+		},
+		"ImportDataAF_properties_typeProperties_functionAppUrl": {
+			"value": "https://importdataaf.azurewebsites.net"
 		},
 		"OcctooSftp_properties_typeProperties_host": {
 			"value": "ftp.fenixoutdoor.se"
 		},
 		"OcctooSftp_properties_typeProperties_userName": {
 			"value": "OcctooTest"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"value": "https://blobstoragels.dfs.core.windows.net"
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"ImportDataAF_properties_typeProperties_functionAppUrl": {
-			"value": "https://importdataaf.azurewebsites.net"
 		}
 	}
 }
