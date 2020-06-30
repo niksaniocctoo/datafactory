@@ -5,13 +5,7 @@
 		"factoryName": {
 			"value": "ingressadf"
 		},
-		"AZImportFiles_functionKey": {
-			"value": ""
-		},
 		"AzureBlobStorageLS_connectionString": {
-			"value": ""
-		},
-		"AzureDataLakeStorageLS_accountKey": {
 			"value": ""
 		},
 		"ImportDataAF_functionKey": {
@@ -19,12 +13,6 @@
 		},
 		"OcctooSftp_password": {
 			"value": ""
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"value": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"value": "https://blobstoragels.dfs.core.windows.net"
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
 			"value": "https://importdataaf.azurewebsites.net"

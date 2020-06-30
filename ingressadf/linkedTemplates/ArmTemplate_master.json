@@ -7,17 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ingressadf"
 		},
-		"AZImportFiles_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
-		},
 		"AzureBlobStorageLS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageLS'"
-		},
-		"AzureDataLakeStorageLS_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
 		},
 		"ImportDataAF_functionKey": {
 			"type": "secureString",
@@ -26,14 +18,6 @@
 		"OcctooSftp_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OcctooSftp'"
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -74,26 +58,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AZImportFiles_functionKey": {
-						"value": "[parameters('AZImportFiles_functionKey')]"
-					},
 					"AzureBlobStorageLS_connectionString": {
 						"value": "[parameters('AzureBlobStorageLS_connectionString')]"
-					},
-					"AzureDataLakeStorageLS_accountKey": {
-						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
 					},
 					"ImportDataAF_functionKey": {
 						"value": "[parameters('ImportDataAF_functionKey')]"
 					},
 					"OcctooSftp_password": {
 						"value": "[parameters('OcctooSftp_password')]"
-					},
-					"AZImportFiles_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]"
-					},
-					"AzureDataLakeStorageLS_properties_typeProperties_url": {
-						"value": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]"
 					},
 					"ImportDataAF_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ImportDataAF_properties_typeProperties_functionAppUrl')]"

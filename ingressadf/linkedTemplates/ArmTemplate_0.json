@@ -7,17 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ingressadf"
 		},
-		"AZImportFiles_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AZImportFiles'"
-		},
 		"AzureBlobStorageLS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageLS'"
-		},
-		"AzureDataLakeStorageLS_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageLS'"
 		},
 		"ImportDataAF_functionKey": {
 			"type": "secureString",
@@ -26,14 +18,6 @@
 		"OcctooSftp_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'OcctooSftp'"
-		},
-		"AZImportFiles_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://importcustomerdatatoonboarding.azurewebsites.net"
-		},
-		"AzureDataLakeStorageLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://blobstoragels.dfs.core.windows.net"
 		},
 		"ImportDataAF_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -53,24 +37,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AZImportFiles')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Function importing data",
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AZImportFiles_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AZImportFiles_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageLS')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -79,23 +45,6 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorageLS_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorageLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorageLS_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorageLS_accountKey')]"
-					}
 				}
 			},
 			"dependsOn": []
@@ -478,7 +427,8 @@
 								"value": "@activity('GetFilesForSpliting').output.childItems",
 								"type": "Expression"
 							},
-							"isSequential": true,
+							"isSequential": false,
+							"batchCount": 5,
 							"activities": [
 								{
 									"name": "SplitFile",
